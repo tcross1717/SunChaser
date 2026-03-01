@@ -1,0 +1,338 @@
+# Add or remove destinations here. Run `python main.py --init` to sync to the database.
+destinations:
+
+  # ── Europe ──────────────────────────────────────────────────────────────────
+  - name: "London"
+    iata_code: LHR
+    country: "United Kingdom"
+    region: "Europe"
+
+  - name: "Paris"
+    iata_code: CDG
+    country: "France"
+    region: "Europe"
+
+  - name: "Amsterdam"
+    iata_code: AMS
+    country: "Netherlands"
+    region: "Europe"
+
+  - name: "Rome"
+    iata_code: FCO
+    country: "Italy"
+    region: "Europe"
+
+  - name: "Milan"
+    iata_code: MXP
+    country: "Italy"
+    region: "Europe"
+
+  - name: "Barcelona"
+    iata_code: BCN
+    country: "Spain"
+    region: "Europe"
+
+  - name: "Madrid"
+    iata_code: MAD
+    country: "Spain"
+    region: "Europe"
+
+  - name: "Lisbon"
+    iata_code: LIS
+    country: "Portugal"
+    region: "Europe"
+
+  - name: "Dublin"
+    iata_code: DUB
+    country: "Ireland"
+    region: "Europe"
+
+  - name: "Athens"
+    iata_code: ATH
+    country: "Greece"
+    region: "Europe"
+
+  - name: "Santorini"
+    iata_code: JTR
+    country: "Greece"
+    region: "Europe"
+
+  - name: "Prague"
+    iata_code: PRG
+    country: "Czech Republic"
+    region: "Europe"
+
+  - name: "Vienna"
+    iata_code: VIE
+    country: "Austria"
+    region: "Europe"
+
+  - name: "Zurich"
+    iata_code: ZRH
+    country: "Switzerland"
+    region: "Europe"
+
+  - name: "Copenhagen"
+    iata_code: CPH
+    country: "Denmark"
+    region: "Europe"
+
+  - name: "Stockholm"
+    iata_code: ARN
+    country: "Sweden"
+    region: "Europe"
+
+  - name: "Edinburgh"
+    iata_code: EDI
+    country: "United Kingdom"
+    region: "Europe"
+
+  - name: "Istanbul"
+    iata_code: IST
+    country: "Turkey"
+    region: "Europe"
+
+  - name: "Frankfurt"
+    iata_code: FRA
+    country: "Germany"
+    region: "Europe"
+
+  - name: "Nice"
+    iata_code: NCE
+    country: "France"
+    region: "Europe"
+
+  - name: "Reykjavik"
+    iata_code: KEF
+    country: "Iceland"
+    region: "Europe"
+
+  # ── Middle East & Africa ────────────────────────────────────────────────────
+  - name: "Dubai"
+    iata_code: DXB
+    country: "United Arab Emirates"
+    region: "Middle East"
+
+  - name: "Tel Aviv"
+    iata_code: TLV
+    country: "Israel"
+    region: "Middle East"
+
+  - name: "Marrakech"
+    iata_code: RAK
+    country: "Morocco"
+    region: "Africa"
+
+  - name: "Cape Town"
+    iata_code: CPT
+    country: "South Africa"
+    region: "Africa"
+
+  # ── Asia & Pacific ──────────────────────────────────────────────────────────
+  - name: "Tokyo"
+    iata_code: NRT
+    country: "Japan"
+    region: "Asia"
+
+  - name: "Osaka"
+    iata_code: KIX
+    country: "Japan"
+    region: "Asia"
+
+  - name: "Seoul"
+    iata_code: ICN
+    country: "South Korea"
+    region: "Asia"
+
+  - name: "Singapore"
+    iata_code: SIN
+    country: "Singapore"
+    region: "Asia"
+
+  - name: "Hong Kong"
+    iata_code: HKG
+    country: "Hong Kong"
+    region: "Asia"
+
+  - name: "Taipei"
+    iata_code: TPE
+    country: "Taiwan"
+    region: "Asia"
+
+  - name: "Bangkok"
+    iata_code: BKK
+    country: "Thailand"
+    region: "Asia"
+
+  - name: "Phuket"
+    iata_code: HKT
+    country: "Thailand"
+    region: "Asia"
+
+  - name: "Bali"
+    iata_code: DPS
+    country: "Indonesia"
+    region: "Asia"
+
+  - name: "Ho Chi Minh City"
+    iata_code: SGN
+    country: "Vietnam"
+    region: "Asia"
+
+  - name: "Mumbai"
+    iata_code: BOM
+    country: "India"
+    region: "Asia"
+
+  - name: "Sydney"
+    iata_code: SYD
+    country: "Australia"
+    region: "Pacific"
+
+  - name: "Auckland"
+    iata_code: AKL
+    country: "New Zealand"
+    region: "Pacific"
+
+  # ── Caribbean & Mexico ──────────────────────────────────────────────────────
+  - name: "Cancun"
+    iata_code: CUN
+    country: "Mexico"
+    region: "Caribbean/Mexico"
+
+  - name: "Mexico City"
+    iata_code: MEX
+    country: "Mexico"
+    region: "Caribbean/Mexico"
+
+  - name: "San Juan"
+    iata_code: SJU
+    country: "Puerto Rico"
+    region: "Caribbean/Mexico"
+
+  - name: "Punta Cana"
+    iata_code: PUJ
+    country: "Dominican Republic"
+    region: "Caribbean/Mexico"
+
+  - name: "Nassau"
+    iata_code: NAS
+    country: "Bahamas"
+    region: "Caribbean/Mexico"
+
+  - name: "Montego Bay"
+    iata_code: MBJ
+    country: "Jamaica"
+    region: "Caribbean/Mexico"
+
+  - name: "Aruba"
+    iata_code: AUA
+    country: "Aruba"
+    region: "Caribbean/Mexico"
+
+  - name: "St. Thomas"
+    iata_code: STT
+    country: "US Virgin Islands"
+    region: "Caribbean/Mexico"
+
+  - name: "Barbados"
+    iata_code: BGI
+    country: "Barbados"
+    region: "Caribbean/Mexico"
+
+  # ── Latin America ───────────────────────────────────────────────────────────
+  - name: "Bogotá"
+    iata_code: BOG
+    country: "Colombia"
+    region: "Latin America"
+
+  - name: "Medellín"
+    iata_code: MDE
+    country: "Colombia"
+    region: "Latin America"
+
+  - name: "Cartagena"
+    iata_code: CTG
+    country: "Colombia"
+    region: "Latin America"
+
+  - name: "Buenos Aires"
+    iata_code: EZE
+    country: "Argentina"
+    region: "Latin America"
+
+  - name: "São Paulo"
+    iata_code: GRU
+    country: "Brazil"
+    region: "Latin America"
+
+  - name: "Rio de Janeiro"
+    iata_code: GIG
+    country: "Brazil"
+    region: "Latin America"
+
+  - name: "Lima"
+    iata_code: LIM
+    country: "Peru"
+    region: "Latin America"
+
+  # ── Domestic ────────────────────────────────────────────────────────────────
+  - name: "Miami"
+    iata_code: MIA
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Los Angeles"
+    iata_code: LAX
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Chicago"
+    iata_code: ORD
+    country: "United States"
+    region: "Domestic"
+
+  - name: "San Francisco"
+    iata_code: SFO
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Las Vegas"
+    iata_code: LAS
+    country: "United States"
+    region: "Domestic"
+
+  - name: "New Orleans"
+    iata_code: MSY
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Nashville"
+    iata_code: BNA
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Denver"
+    iata_code: DEN
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Seattle"
+    iata_code: SEA
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Austin"
+    iata_code: AUS
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Washington DC"
+    iata_code: DCA
+    country: "United States"
+    region: "Domestic"
+
+  - name: "Orlando"
+    iata_code: MCO
+    country: "United States"
+    region: "Domestic"

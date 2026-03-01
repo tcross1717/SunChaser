@@ -1,0 +1,134 @@
+# Update your points balances here, then run `python main.py --init` to sync.
+programs:
+
+  # ── Credit Card Programs ────────────────────────────────────────────────────
+  - id: amex_mr
+    name: "Amex Membership Rewards"
+    type: credit_card
+    currency: points
+    balance: 0
+    transfer_partners:
+      - delta_skymiles
+      - air_france_flying_blue
+      - british_airways_avios
+      - singapore_krisflyer
+      - cathay_asia_miles
+      - air_canada_aeroplan
+      - emirates_skywards
+      - etihad_guest
+      - jetblue_trueblue
+      - ana_mileage_club
+
+  - id: chase_ur
+    name: "Chase Ultimate Rewards"
+    type: credit_card
+    currency: points
+    balance: 0
+    transfer_partners:
+      - united_mileageplus
+      - southwest_rapid_rewards
+      - british_airways_avios
+      - air_france_flying_blue
+      - singapore_krisflyer
+      - air_canada_aeroplan
+      - emirates_skywards
+      - jetblue_trueblue
+      - virgin_atlantic
+      - turkish_miles_smiles
+
+  # ── Airline Programs ────────────────────────────────────────────────────────
+  - id: delta_skymiles
+    name: "Delta SkyMiles"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: united_mileageplus
+    name: "United MileagePlus"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: american_aadvantage
+    name: "American AAdvantage"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: jetblue_trueblue
+    name: "JetBlue TrueBlue"
+    type: airline
+    currency: points
+    balance: 0
+
+  - id: southwest_rapid_rewards
+    name: "Southwest Rapid Rewards"
+    type: airline
+    currency: points
+    balance: 0
+
+  - id: alaska_mileage_plan
+    name: "Alaska Mileage Plan"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: air_canada_aeroplan
+    name: "Air Canada Aeroplan"
+    type: airline
+    currency: points
+    balance: 0
+
+  - id: air_france_flying_blue
+    name: "Air France/KLM Flying Blue"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: british_airways_avios
+    name: "British Airways Avios"
+    type: airline
+    currency: avios
+    balance: 0
+
+  - id: emirates_skywards
+    name: "Emirates Skywards"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: singapore_krisflyer
+    name: "Singapore KrisFlyer"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: virgin_atlantic
+    name: "Virgin Atlantic Flying Club"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: turkish_miles_smiles
+    name: "Turkish Airlines Miles&Smiles"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: cathay_asia_miles
+    name: "Cathay Pacific Asia Miles"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: etihad_guest
+    name: "Etihad Guest"
+    type: airline
+    currency: miles
+    balance: 0
+
+  - id: ana_mileage_club
+    name: "ANA Mileage Club"
+    type: airline
+    currency: miles
+    balance: 0

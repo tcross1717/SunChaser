@@ -1,0 +1,21 @@
+departure_airports:
+  - code: JFK
+    name: "John F. Kennedy International"
+  - code: EWR
+    name: "Newark Liberty International"
+  - code: LGA
+    name: "LaGuardia Airport"
+
+scheduler:
+  flight_poll_interval_hours: 24
+  award_poll_interval_hours: 12
+
+alerts:
+  default_max_cash_usd: 500
+  default_cabin_class: economy
+  price_drop_threshold_pct: 10   # alert if price drops this % or more
+
+# How many days ahead to search for flights
+search:
+  lookahead_days: 90
+  trip_length_days: 7            # default round-trip length
