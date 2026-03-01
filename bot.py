@@ -30,6 +30,28 @@ logger = logging.getLogger(__name__)
 _TG = "https://api.telegram.org/bot{token}/{method}"
 
 
+def _fmt_depart(date_str: str | None, time_str: str | None = None) -> str:
+    """Format departure as 'Sun May 24 · 7:50 PM'.  Time is optional."""
+    if not date_str:
+        return "—"
+    try:
+        dt  = datetime.strptime(date_str, "%Y-%m-%d")
+        day = dt.strftime("%a %b") + f" {dt.day}"   # e.g. "Sun May 24"
+    except ValueError:
+        day = date_str
+
+    if time_str:
+        try:
+            t    = datetime.strptime(time_str, "%H:%M")
+            hour = t.hour % 12 or 12
+            ampm = "AM" if t.hour < 12 else "PM"
+            return f"{day} · {hour}:{t.minute:02d} {ampm}"
+        except ValueError:
+            pass
+
+    return day
+
+
 # ── Telegram helpers ──────────────────────────────────────────────────────────
 
 def _send(text: str, chat_id: str) -> None:
@@ -105,7 +127,7 @@ def cmd_deals(chat_id: str, _args: str) -> None:
         lines.append(
             f"{i}. *{orig.iata_code} → {dest.iata_code}* — ${fp.price:,.0f}\n"
             f"   {dest.name} · {airline} · {stops}\n"
-            f"   Departs {fp.departure_date}"
+            f"   Departs {_fmt_depart(fp.departure_date, fp.departure_time)}"
         )
     _send("\n".join(lines), chat_id)
 
@@ -170,7 +192,7 @@ def cmd_to(chat_id: str, args: str) -> None:
         lines.append(
             f"*{orig.iata_code} → {dest.iata_code}* — ${fp.price:,.0f}\n"
             f"   {airline} · {stops}{' · ' + dur if dur else ''}\n"
-            f"   Departs {fp.departure_date}"
+            f"   Departs {_fmt_depart(fp.departure_date, fp.departure_time)}"
         )
     _send("\n".join(lines), chat_id)
 
@@ -194,7 +216,7 @@ def cmd_mistakes(chat_id: str, _args: str) -> None:
         lines.append(
             f"*{f['origin']} → {f['dest_iata']}* — ${f['price']:.0f} {f['cabin']}\n"
             f"   Normal avg ${f['avg_price']:.0f} · *{f['drop_pct']}% off*{pct_str}\n"
-            f"   {f['airline'] or 'Various'} · Departs {f['departs']}"
+            f"   {f['airline'] or 'Various'} · Departs {_fmt_depart(f['departs'])}"
         )
     _send("\n".join(lines), chat_id)
 
