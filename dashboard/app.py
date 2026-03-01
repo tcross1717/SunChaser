@@ -8,11 +8,12 @@ import plotly.graph_objects as go
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from db.database import get_session, init_db
 from db.models import (
     FlightPrice, AwardPrice, Route, Destination,
-    LoyaltyProgram, UserPoints, HotelPrice,
+    LoyaltyProgram, UserPoints, HotelPrice, DepartureAirport,
 )
 from analytics import price_percentile, route_average
 from optimizer import optimize_transfers
@@ -736,12 +737,10 @@ with tab_cash:
     # Load destination + origin options from DB
     _sess = get_session()
     _all_dests   = _sess.query(Destination).filter(Destination.is_active == True).order_by(Destination.name).all()
-    _all_origins = _sess.query(__import__('db.models', fromlist=['DepartureAirport']).DepartureAirport).order_by(
-        __import__('db.models', fromlist=['DepartureAirport']).DepartureAirport.iata_code
-    ).all()
+    _all_origins = _sess.query(DepartureAirport).order_by(DepartureAirport.iata_code).all()
     _price_range = _sess.query(
-        __import__('sqlalchemy', fromlist=['func']).func.min(FlightPrice.price),
-        __import__('sqlalchemy', fromlist=['func']).func.max(FlightPrice.price),
+        func.min(FlightPrice.price),
+        func.max(FlightPrice.price),
     ).first()
     _sess.close()
 
@@ -801,9 +800,6 @@ with tab_cash:
     cabin_lower = cabin.lower()
     selected_iatas   = [_dest_options[k]   for k in sel_dests]
     selected_origins = [_origin_options[k] for k in sel_origins]
-
-    from db.models import DepartureAirport
-    from sqlalchemy import func
 
     session = get_session()
     q = (

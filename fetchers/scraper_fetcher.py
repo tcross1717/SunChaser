@@ -20,6 +20,32 @@ logger = logging.getLogger(__name__)
 
 # ── Text parsers ───────────────────────────────────────────────────────────────
 
+# Single-word airline brands with embedded capitals that must not be split
+_CAMELCASE_AIRLINES = {"JetBlue", "WestJet", "AirAsia", "IndiGo", "SpiceJet", "VivaAerobus"}
+
+
+def _extract_primary_airline(text: str) -> str | None:
+    """Return just the primary (first) airline, dropping codeshare partners.
+
+    Google Flights concatenates codeshares without a separator, e.g.:
+      'British AirwaysFinnair, Iberia, Alaska' → 'British Airways'
+      'Air CanadaOperated by Air Canada Express - Jazz' → 'Air Canada'
+    Strategy: take the segment before the first comma, then split at the
+    first lowercase→uppercase boundary (≥5 chars into the string).
+    """
+    if not text:
+        return None
+    # Known CamelCase single-word brands — check before generic split
+    for name in _CAMELCASE_AIRLINES:
+        if text.startswith(name):
+            return name
+    # Take only the primary carrier (before codeshare list)
+    primary = text.split(",")[0].strip()
+    # Split at first camelCase boundary: e.g. 'AirwaysF' → 'Airways'
+    m = re.match(r'^(.{4,}?[a-z])([A-Z])', primary)
+    return m.group(1) if m else primary
+
+
 def _parse_price(text: str) -> float | None:
     m = re.search(r"\$([\d,]+)", text)
     return float(m.group(1).replace(",", "")) if m else None
@@ -160,7 +186,7 @@ async def _search_one(
             airline = None
             for ln in lines:
                 if len(ln) > 2 and not skip_patterns.search(ln):
-                    airline = ln
+                    airline = _extract_primary_airline(ln)
                     break
 
             # ── Flight number (e.g. "AA 100") ──
