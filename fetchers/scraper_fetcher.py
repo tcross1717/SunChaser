@@ -68,15 +68,16 @@ async def _search_one(
     offers: list[dict] = []
 
     try:
-        # Google Flights pre-filled URL (hash format)
-        url = (
-            f"https://www.google.com/travel/flights?hl=en"
-            f"#flt={origin}.{dest}.{dep_date}"
-            f"*{dest}.{origin}.{ret_date}"
-            f";c:USD;e:1;sd:1;t:f"
-        )
+        # Build natural-language query URL — loads actual route results
+        dep_dt = datetime.strptime(dep_date, "%Y-%m-%d")
+        ret_dt = datetime.strptime(ret_date, "%Y-%m-%d")
+        dep_str = f"{dep_dt.strftime('%B')}+{dep_dt.day}"
+        ret_str = f"{ret_dt.strftime('%B')}+{ret_dt.day}+{ret_dt.year}"
+        q = f"round+trip+flights+from+{origin}+to+{dest}+on+{dep_str}+returning+{ret_str}"
+        url = f"https://www.google.com/travel/flights?q={q}"
+
         await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        await page.wait_for_timeout(3_500)
+        await page.wait_for_timeout(5_000)
 
         # Dismiss cookie/consent banners if present
         for btn_name in ["Accept all", "Agree", "I agree", "OK"]:
@@ -89,14 +90,19 @@ async def _search_one(
             except Exception:
                 pass
 
-        # Wait for flight result list items
-        try:
-            await page.wait_for_selector('[role="listitem"]', timeout=12_000)
-        except Exception:
+        # Flight rows are plain <li> elements (not role="listitem")
+        items = await page.locator("li").all()
+        if not items:
             logger.warning(f"No results loaded for {origin}→{dest} {dep_date}")
             return []
 
-        items = await page.locator('[role="listitem"]').all()
+        seen: set[tuple] = set()  # dedup by (dep_time, arr_time, price)
+
+        skip_patterns = re.compile(
+            r"^\$|^\d{1,2}:\d{2}|^\s*[–—]\s*$|\bstop|\bhr\b|\bmin\b"
+            r"|\bnonstop\b|\+\d|CO2|emission|round.?trip|[A-Z]{3}[–—][A-Z]{3}|\bkg\b",
+            re.I,
+        )
 
         for item in items:
             try:
@@ -107,6 +113,12 @@ async def _search_one(
             if not text or "$" not in text:
                 continue
 
+            # Compact flight rows have exactly 2 AM/PM time hits (dep + arr).
+            # Expanded/verbose rows repeat times and airport names — skip them.
+            time_hits = re.findall(r"\d{1,2}:\d{2}\s*(?:AM|PM)", text, re.I)
+            if len(time_hits) != 2:
+                continue
+
             lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
 
             # ── Price ──
@@ -114,11 +126,20 @@ async def _search_one(
             for ln in lines:
                 if "$" in ln:
                     p = _parse_price(ln)
-                    if p and p > 30:
+                    if p and p > 50:
                         price = p
                         break
             if not price:
                 continue
+
+            # ── Times ──
+            dep_time = _parse_time(time_hits[0])
+            arr_time = _parse_time(time_hits[1])
+
+            key = (dep_time, arr_time, price)
+            if key in seen:
+                continue
+            seen.add(key)
 
             # ── Stops ──
             stops = 0
@@ -130,22 +151,13 @@ async def _search_one(
             # ── Duration ──
             duration = None
             for ln in lines:
-                if "hr" in ln.lower():
+                if "hr" in ln.lower() and "CO2" not in ln:
                     duration = _parse_duration(ln)
                     if duration:
                         break
 
-            # ── Times — find "HH:MM AM/PM" patterns ──
-            time_hits = re.findall(r"\d{1,2}:\d{2}\s*(?:AM|PM)?", text, re.I)
-            dep_time = _parse_time(time_hits[0]) if len(time_hits) >= 1 else None
-            arr_time = _parse_time(time_hits[1]) if len(time_hits) >= 2 else None
-
-            # ── Airline — first meaningful line that isn't a time/price/stop/duration ──
+            # ── Airline — first meaningful line that isn't time/price/stop/duration ──
             airline = None
-            skip_patterns = re.compile(
-                r"^\$|^\d{1,2}:\d{2}|\bstop|\bhr\b|\bmin\b|\bnonstop\b|\+\d",
-                re.I,
-            )
             for ln in lines:
                 if len(ln) > 2 and not skip_patterns.search(ln):
                     airline = ln
